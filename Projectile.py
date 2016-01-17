@@ -1,4 +1,4 @@
-import pygame, sys, random
+import pygame, sys, random, math
 from pygame.locals import *
 
 all_projs = pygame.sprite.Group()
@@ -12,11 +12,11 @@ class Projectile(pygame.sprite.Sprite):
         self.startY = startY
         self.dmg = damage
         self.color = color
-        if(self.speed > 0):
+        if(speed > 0):
             self.dir = 'U'  # direction (U, D), more added later?
         else:
             self.dir = 'D'
-        self.speed = math.abs(speed)
+        self.speed = abs(speed)
     
     def updateLocation(self):  # Only used when on screen
         if self.dir == 'U':

@@ -35,19 +35,32 @@ yplayer = pygame.image.load('Images/yellow_player.png')
 
 player = Player([rplayer, yplayer, bplayer], 180, 450 + buffer_height, 1)
 
+counter = 0
+
 while 1 == 1:
+    counter = counter + 1
+    
     screen.blit(background, (0, 0+buffer_height))
     screen.blit(bshot, (10,10 + buffer_height))
     screen.blit(rshot, (20,10 + buffer_height))
     screen.blit(yshot, (30,10 + buffer_height))
     
+    for p in all_projs:
+        p.updateLocation()
+    
     all_players.draw(screen)
+    all_projs.draw(screen)
     
     key = pygame.key.get_pressed()
     player.update(key)
     
-    
-    
+    if(counter % 10 == 0):
+        if player.color == 'red':
+            p = Projectile(rshot, player.rect.centerx - 2, player.rect.top - 20, 5, 'red', 7)
+        if player.color == 'yellow':
+            p = Projectile(yshot, player.rect.centerx - 2, player.rect.top - 20, 5, 'yellow', 7)
+        if player.color == 'blue':
+            p = Projectile(bshot, player.rect.centerx - 2, player.rect.top - 20, 5, 'blue', 7)
     
     pygame.display.update()
     pygame.event.pump()

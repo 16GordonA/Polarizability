@@ -7,7 +7,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, images, startX, startY, lives):
         pygame.sprite.Sprite.__init__(self, all_players)
         self.images = [i.convert_alpha() for i in images] #transparent images in RYB order
-        self.image = images[1]
+        self.image = images[0]
         self.rect = self.image.get_rect().move(startX, startY)  # rect is for blitting
         self.color= "red"
         self.speedX = 0
