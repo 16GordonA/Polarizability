@@ -24,12 +24,21 @@ class Projectile(pygame.sprite.Sprite):
         elif self.dir == 'D':
             self.rect = self.rect.move(0, self.speed)
         
-        if self.rect.left > 500 or self.rect.right < -100 or self.rect.bottom < -100 or self.rect.top > 800:
+        if self.rect.left > 500 or self.rect.right < -100 or self.rect.bottom < 0 or self.rect.top > 800:
             all_projs.remove(self)
             
-    def contactPlayer(self, target):
+    def contactEnemy(self, target):
         if self.rect.bottom > target.rect.top and self.rect.top < target.rect.bottom and self.rect.right > target.rect.left and self.rect.left < target.rect.right:
             if self.color == target.color:
+                target.setHP(target.HP - self.dmg)
+                self.rect = self.rect.move(999, 999)
+                all_projs.remove(self)
+            else:
+                self.dir = 'D'
+    
+    def contactPlayer(self, target):
+        if self.rect.bottom > target.rect.top and self.rect.top < target.rect.bottom and self.rect.right > target.rect.left and self.rect.left < target.rect.right:
+            if self.color is target.color:
                 target.setHP(target.HP - self.dmg)
                 self.rect = self.rect.move(999, 999)
                 all_projs.remove(self)

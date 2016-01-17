@@ -24,6 +24,7 @@ screen = pygame.display.set_mode(size)
 
 print "Loading Images..."
 background = pygame.image.load('Images/Background.png')
+header = pygame.image.load('Images/Header.png')
 
 bshot = pygame.image.load('Images/blue_shot.png')
 rshot = pygame.image.load('Images/red_shot.png')
@@ -37,25 +38,33 @@ bspid = pygame.image.load('Images/blue_spider.png')
 rspid = pygame.image.load('Images/red_spider.png')
 yspid = pygame.image.load('Images/yellow_spider.png')
 
+bshift = pygame.image.load('Images/blue_shift.png')
+rshift = pygame.image.load('Images/red_shift.png')
+yshift = pygame.image.load('Images/yellow_shift.png')
+
 player = Player([rplayer, yplayer, bplayer], 180, 450 + buffer_height, 1)
 en1 = Enemy(bspid, 50, 200 + buffer_height, 10, 'blue', 5)
 en2 = Enemy(rspid, 150, 250 + buffer_height, 10, 'red', 5)
 en3 = Enemy(yspid, 250, 300 + buffer_height, 10, 'yellow', 5)
 
+en4 = Shifter([rshift,yshift,bshift], 100, 100 + buffer_height, 10, 3)
 counter = 0
 
-while 1 == 1:
+enemies_alive = True
+
+while player.alive and enemies_alive:
     counter = counter + 1
+    
     
     screen.blit(background, (0, 0+buffer_height))
 
     if(counter % 10 == 0):
         if player.color == 'red':
-            p = Projectile(rshot, player.rect.centerx - 2, player.rect.top - 20, 5, 'red', 7)
+            p = Projectile(rshot, player.rect.centerx - 2, player.rect.top - 20, 5, 'red', 9)
         if player.color == 'yellow':
-            p = Projectile(yshot, player.rect.centerx - 2, player.rect.top - 20, 5, 'yellow', 7)
+            p = Projectile(yshot, player.rect.centerx - 2, player.rect.top - 20, 5, 'yellow', 9)
         if player.color == 'blue':
-            p = Projectile(bshot, player.rect.centerx - 2, player.rect.top - 20, 5, 'blue', 7)
+            p = Projectile(bshot, player.rect.centerx - 2, player.rect.top - 20, 5, 'blue', 9)
     
     key = pygame.key.get_pressed()
     
@@ -67,17 +76,33 @@ while 1 == 1:
     for p in all_projs:
         p.updateLocation()
         for e in all_enemies:
-            p.contactPlayer(e)
+            p.contactEnemy(e)
+        p.contactPlayer(player)
+    
+    enemies_alive = False
     for e in all_enemies:
         e.updateLocation()
-        pygame.sprite.spritecollide(e, all_projs, True)
+        if e.alive:
+            enemies_alive = True
+        #pygame.sprite.spritecollide(e, all_projs, True)
     
     all_players.draw(screen)
     all_projs.draw(screen)
     all_enemies.draw(screen)
     
+    screen.blit(header, (0,0))
+    
+    htext = myFont.render("Ship Damage: " + str((100*(player.maxHP - player.HP))/(player.maxHP)) + "%", 1, (0,0,0))
+    screen.blit(htext, (250, 10))
+    
     
     
     pygame.display.update()
     pygame.event.pump()
+    
+if enemies_alive:
+    print("YOU STINK, LOSER")
+
+elif player.alive:
+    print("You play almost as well as my grandma")
 

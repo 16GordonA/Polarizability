@@ -4,10 +4,15 @@ from pygame.locals import *
 all_players = pygame.sprite.Group()
 
 class Player(pygame.sprite.Sprite):
+    
+    buffer_height = 50
+    SCREEN_WIDTH = 400
+    SCREEN_HEIGHT = 600 + buffer_height
+    
     def __init__(self, images, startX, startY, lives):
         pygame.sprite.Sprite.__init__(self, all_players)
         self.images = [i.convert_alpha() for i in images] #transparent images in RYB order
-        self.image = images[0]
+        self.image = images[0].convert_alpha()
         self.rect = self.image.get_rect().move(startX, startY)  # rect is for blitting
         self.color= "red"
         self.speedX = 0
@@ -15,7 +20,9 @@ class Player(pygame.sprite.Sprite):
         self.direction = 'U'
         self.alive = True
         self.lives = lives
-        self.HP = 100
+        self.alive = True
+        self.maxHP = 15
+        self.HP = self.maxHP
     
     def update(self, keyPressed):
         if(self.speedX > 0):
@@ -61,4 +68,19 @@ class Player(pygame.sprite.Sprite):
             self.speedY += speed
             if self.speedY > max:
                 self.speedY = max
+                
+        if self.speedX > 0 and self.rect.right >= Player.SCREEN_WIDTH:
+            self.speedX = -2
+        elif self.speedX < 0 and self.rect.left <= 0:
+            self.speedX = 2
         
+        if self.speedY < 0 and self.rect.top <= Player.buffer_height:
+            self.speedY = 2
+        elif self.speedY > 0 and self.rect.bottom >= Player.SCREEN_HEIGHT:
+            self.speedY = - 2
+    
+    def setHP(self, newHP):
+        self.HP = newHP
+        if newHP <= 0:
+            self.alive = False
+            all_players.remove(self)
