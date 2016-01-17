@@ -29,6 +29,7 @@ class Projectile(pygame.sprite.Sprite):
             
     def contactPlayer(self, target):
         if self.rect.bottom > target.rect.top and self.rect.top < target.rect.bottom and self.rect.right > target.rect.left and self.rect.left < target.rect.right:
-            target.setHP(target.HP - self.dmg)
-            self.rect = self.rect.move(999, 999)
-            all_projs.remove(self)
+            if self.color == target.color:
+                target.setHP(target.HP - self.dmg)
+                self.rect = self.rect.move(999, 999)
+                all_projs.remove(self)
