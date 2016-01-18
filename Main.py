@@ -21,7 +21,7 @@ SCREEN_HEIGHT = 600 + buffer_height #this number refers to the dimensions of the
 pygame.font.init()
 myFont = pygame.font.SysFont("Comic Sans", 18)
 
-scoreFont = pygame.font.SysFont("Helvetica", 40)
+scoreFont = pygame.font.SysFont("Consolas", 45)
 
 size = SCREEN_WIDTH, SCREEN_HEIGHT
 screen = pygame.display.set_mode(size)
@@ -124,7 +124,7 @@ while player.alive:
     htext = myFont.render("Ship Damage: " + str((100*(player.maxHP - player.HP))/(player.maxHP)) + "%", 1, (0,0,0))
     screen.blit(htext, (250, 10))
     stext = scoreFont.render(str(Player.score),1, (0,0,0))
-    screen.blit(stext, (130, 3))
+    screen.blit(stext, (130, 6))
     
     
     pygame.display.update()
@@ -134,7 +134,7 @@ while 1 == 1:
     screen.blit(header, (0,0))
     
     stext = scoreFont.render(str(Player.score),1, (0,0,0))
-    screen.blit(stext, (130, 3))
+    screen.blit(stext, (130, 6))
     
     screen.blit(end,(0,buffer_height))
     
