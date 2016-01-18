@@ -29,6 +29,7 @@ screen = pygame.display.set_mode(size)
 print "Loading Images..."
 background = pygame.image.load('Images/Background.png')
 header = pygame.image.load('Images/Header.png')
+begin = pygame.image.load('Images/Begin.png')
 pause = pygame.image.load('Images/Pause.png')
 end = pygame.image.load('Images/Game_Over.png')
 
@@ -77,6 +78,25 @@ en4 = Shifter([rshift,yshift,bshift], 100, 100 + buffer_height, 10, 3)
 counter = 0
 
 enemies_alive = True
+
+while 1 == 1:
+    screen.blit(header, (0,0))
+
+    stext = scoreFont.render(str(Player.score),1, (0,0,0))
+    screen.blit(stext, (130, 6))
+    
+    screen.blit(begin, (50, 100 + buffer_height))
+    
+    key = pygame.key.get_pressed()
+
+    if key[K_ESCAPE]:
+        sys.exit()
+    
+    if key[K_o]:
+        break
+    
+    pygame.display.update()
+    pygame.event.pump()
 
 while player.alive:
     counter = counter + 1
