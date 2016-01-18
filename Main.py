@@ -11,6 +11,8 @@ main.py
 Creates the outermost frame for the world
 '''
 
+
+
 buffer_height = 50 #extra space for HP, currency, etc
 
 SCREEN_WIDTH = 400
@@ -18,6 +20,8 @@ SCREEN_HEIGHT = 600 + buffer_height #this number refers to the dimensions of the
 
 pygame.font.init()
 myFont = pygame.font.SysFont("Comic Sans", 18)
+
+scoreFont = pygame.font.SysFont("Helvetica", 40)
 
 size = SCREEN_WIDTH, SCREEN_HEIGHT
 screen = pygame.display.set_mode(size)
@@ -42,12 +46,32 @@ bshift = pygame.image.load('Images/blue_shift.png')
 rshift = pygame.image.load('Images/red_shift.png')
 yshift = pygame.image.load('Images/yellow_shift.png')
 
+def fallerWave(x_pos):
+    if x_pos == 'R':
+        x_pos = SCREEN_WIDTH - 72
+    elif x_pos == 'L':
+        x_pos = 30
+    
+    order = [0, 30, 60]
+    
+    types = [[rspid, 'red'],[yspid, 'yellow'],[bspid, 'blue']]
+    
+    random.shuffle(types)
+    
+    a = Faller(types[0][0], x_pos, 0 + buffer_height, 10, types[0][1])
+    
+    '''
+    a = Faller(rspid, x_pos, order[0] + buffer_height, 10, 'red')
+    b = Faller(yspid, x_pos, order[1] + buffer_height, 10, 'yellow')
+    c = Faller(bspid, x_pos, order[2] + buffer_height, 10, 'blue')
+    '''
 player = Player([rplayer, yplayer, bplayer], 180, 450 + buffer_height, 1)
 en1 = Enemy(bspid, 50, 200 + buffer_height, 10, 'blue', 5)
 en2 = Enemy(rspid, 150, 250 + buffer_height, 10, 'red', 5)
 en3 = Enemy(yspid, 250, 300 + buffer_height, 10, 'yellow', 5)
 
 en4 = Shifter([rshift,yshift,bshift], 100, 100 + buffer_height, 10, 3)
+
 counter = 0
 
 enemies_alive = True
@@ -65,6 +89,9 @@ while player.alive and enemies_alive:
             p = Projectile(yshot, player.rect.centerx - 2, player.rect.top - 20, 5, 'yellow', 9)
         if player.color == 'blue':
             p = Projectile(bshot, player.rect.centerx - 2, player.rect.top - 20, 5, 'blue', 9)
+    
+    if(counter % 50 == 0):
+        fallerWave(random.randint(30,SCREEN_WIDTH - 72))
     
     key = pygame.key.get_pressed()
     
@@ -94,7 +121,8 @@ while player.alive and enemies_alive:
     
     htext = myFont.render("Ship Damage: " + str((100*(player.maxHP - player.HP))/(player.maxHP)) + "%", 1, (0,0,0))
     screen.blit(htext, (250, 10))
-    
+    stext = scoreFont.render(str(Player.score),1, (0,0,0))
+    screen.blit(stext, (130, 3))
     
     
     pygame.display.update()
@@ -105,4 +133,6 @@ if enemies_alive:
 
 elif player.alive:
     print("You play almost as well as my grandma")
+    
+
 

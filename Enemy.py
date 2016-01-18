@@ -1,9 +1,15 @@
 import pygame, sys, random, math
 from pygame.locals import *
+from Player import *
 
 all_enemies = pygame.sprite.Group()
 
 class Enemy(pygame.sprite.Sprite):
+    
+    buffer_height = 50
+    SCREEN_WIDTH = 400
+    SCREEN_HEIGHT = 600 + buffer_height
+    
     def __init__(self, image, startX, startY, damage, color, speed):
         pygame.sprite.Sprite.__init__(self, all_enemies)
         self.image = image.convert_alpha()  # transparent image
@@ -11,7 +17,8 @@ class Enemy(pygame.sprite.Sprite):
         self.startX = startX
         self.startY = startY
         self.dmg = damage
-        self.HP = 5
+        self.maxHP = 5
+        self.HP = self.maxHP
         self.color = color
         self.alive = True
         if(speed > 0):
@@ -37,6 +44,7 @@ class Enemy(pygame.sprite.Sprite):
         self.HP = newHP
         if newHP <= 0:
             all_enemies.remove(self)
+            Player.score = Player.score + self.maxHP
             
 class Shifter(Enemy):
     def __init__(self, images, startX, startY, damage, speed):
@@ -47,7 +55,8 @@ class Shifter(Enemy):
         self.startX = startX
         self.startY = startY
         self.dmg = damage
-        self.HP = 30
+        self.maxHP = 30
+        self.HP = self.maxHP
         self.color = 'red'
         self.age = 0
         if(speed > 0):
@@ -71,4 +80,33 @@ class Shifter(Enemy):
             elif self.color == 'blue':
                 self.image = self.images[0]
                 self.color = 'red'
+                
+class Faller(Enemy):
+    def __init__(self, image, startX, startY, damage, color):
+        pygame.sprite.Sprite.__init__(self, all_enemies)
+        self.image = image.convert_alpha()  # transparent image
+        self.rect = self.image.get_rect().move(startX, startY)  # rect is for blitting
+        self.startX = startX
+        self.startY = startY
+        self.dmg = damage
+        self.maxHP = 5
+        self.HP = self.maxHP
+        self.color = color
+        self.alive = True
+        self.dir = 'D'
+        self.speed = 0
+        self.age = 0
+    
+    def updateLocation(self):
+        self.rect = self.rect.move(0,self.speed)
         
+        self.age += 1
+        
+        if self.age % 20 == 0:
+            self.speed += 1
+        
+        if self.rect.bottom < -100 or self.rect.top > Enemy.SCREEN_HEIGHT:
+            all_enemies.remove(self)
+    
+    
+    

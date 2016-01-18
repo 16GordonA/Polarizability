@@ -8,6 +8,7 @@ class Player(pygame.sprite.Sprite):
     buffer_height = 50
     SCREEN_WIDTH = 400
     SCREEN_HEIGHT = 600 + buffer_height
+    score = 0
     
     def __init__(self, images, startX, startY, lives):
         pygame.sprite.Sprite.__init__(self, all_players)
