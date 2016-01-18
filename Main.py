@@ -29,6 +29,7 @@ screen = pygame.display.set_mode(size)
 print "Loading Images..."
 background = pygame.image.load('Images/Background.png')
 header = pygame.image.load('Images/Header.png')
+pause = pygame.image.load('Images/Pause.png')
 end = pygame.image.load('Images/Game_Over.png')
 
 bshot = pygame.image.load('Images/blue_shot.png')
@@ -98,6 +99,28 @@ while player.alive:
     
     if key[K_ESCAPE]:
         sys.exit()
+        
+    if key[K_p]:
+        #time.sleep(1)
+        key = pygame.key.get_pressed()
+        while 1 == 1:
+            screen.blit(header, (0,0))
+    
+            stext = scoreFont.render(str(Player.score),1, (0,0,0))
+            screen.blit(stext, (130, 6))
+            
+            screen.blit(pause, (100, 250 + buffer_height))
+            
+            key = pygame.key.get_pressed()
+    
+            if key[K_ESCAPE]:
+                sys.exit()
+            
+            if key[K_o]:
+                break
+            
+            pygame.display.update()
+            pygame.event.pump()
     
     player.update(key)
     
@@ -137,6 +160,11 @@ while 1 == 1:
     screen.blit(stext, (130, 6))
     
     screen.blit(end,(0,buffer_height))
+    
+    key = pygame.key.get_pressed()
+    
+    if key[K_ESCAPE]:
+        sys.exit()
     
     pygame.display.update()
     pygame.event.pump()
