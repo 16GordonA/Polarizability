@@ -29,6 +29,7 @@ screen = pygame.display.set_mode(size)
 print "Loading Images..."
 background = pygame.image.load('Images/Background.png')
 header = pygame.image.load('Images/Header.png')
+end = pygame.image.load('Images/Game_Over.png')
 
 bshot = pygame.image.load('Images/blue_shot.png')
 rshot = pygame.image.load('Images/red_shot.png')
@@ -76,7 +77,7 @@ counter = 0
 
 enemies_alive = True
 
-while player.alive and enemies_alive:
+while player.alive:
     counter = counter + 1
     
     
@@ -109,6 +110,7 @@ while player.alive and enemies_alive:
     enemies_alive = False
     for e in all_enemies:
         e.updateLocation()
+        e.contactPlayer(player)
         if e.alive:
             enemies_alive = True
         #pygame.sprite.spritecollide(e, all_projs, True)
@@ -127,12 +129,17 @@ while player.alive and enemies_alive:
     
     pygame.display.update()
     pygame.event.pump()
-    
-if enemies_alive:
-    print("YOU STINK, LOSER")
 
-elif player.alive:
-    print("You play almost as well as my grandma")
+while 1 == 1:
+    screen.blit(header, (0,0))
+    
+    stext = scoreFont.render(str(Player.score),1, (0,0,0))
+    screen.blit(stext, (130, 3))
+    
+    screen.blit(end,(0,buffer_height))
+    
+    pygame.display.update()
+    pygame.event.pump()
     
 
 

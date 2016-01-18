@@ -45,6 +45,11 @@ class Enemy(pygame.sprite.Sprite):
         if newHP <= 0:
             all_enemies.remove(self)
             Player.score = Player.score + self.maxHP
+    
+    def contactPlayer(self, target): #may need to be reworked for bosses and multiple lives
+        if self.rect.bottom > target.rect.top and self.rect.top < target.rect.bottom and self.rect.right > target.rect.left and self.rect.left < target.rect.right:
+            target.setHP(target.HP - self.dmg)
+            self.setHP(0)
             
 class Shifter(Enemy):
     def __init__(self, images, startX, startY, damage, speed):
