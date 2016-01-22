@@ -100,7 +100,7 @@ while 1 == 1:
 
 while player.alive:
     counter = counter + 1
-    
+    time.sleep(.01)
     
     screen.blit(background, (0, 0+buffer_height))
 

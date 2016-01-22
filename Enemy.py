@@ -19,6 +19,7 @@ class Enemy(pygame.sprite.Sprite):
         self.dmg = damage
         self.maxHP = 5
         self.HP = self.maxHP
+        self.armor = 0
         self.color = color
         self.alive = True
         if(speed > 0):
@@ -48,7 +49,7 @@ class Enemy(pygame.sprite.Sprite):
     
     def contactPlayer(self, target): #may need to be reworked for bosses and multiple lives
         if self.rect.bottom > target.rect.top and self.rect.top < target.rect.bottom and self.rect.right > target.rect.left and self.rect.left < target.rect.right:
-            target.setHP(target.HP - self.dmg)
+            target.setHP(target.HP - max(self.dmg - target.armor, 1))
             self.setHP(0)
             
 class Shifter(Enemy):
@@ -61,6 +62,7 @@ class Shifter(Enemy):
         self.startY = startY
         self.dmg = damage
         self.maxHP = 30
+        self.armor = 0
         self.HP = self.maxHP
         self.color = 'red'
         self.age = 0
@@ -96,6 +98,7 @@ class Faller(Enemy):
         self.dmg = damage
         self.maxHP = 5
         self.HP = self.maxHP
+        self.armor = 0
         self.color = color
         self.alive = True
         self.dir = 'D'

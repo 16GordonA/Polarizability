@@ -22,6 +22,7 @@ class Player(pygame.sprite.Sprite):
         self.alive = True
         self.lives = lives
         self.alive = True
+        self.armor = 0
         self.maxHP = 15
         self.HP = self.maxHP
     
@@ -49,6 +50,11 @@ class Player(pygame.sprite.Sprite):
             self.updateSpeed(keyPressed)
             
         self.rect = self.rect.move(self.speedX, self.speedY)
+        
+        if Player.score >= (self.maxHP - 10)/5 * 100:
+            self.maxHP += 5
+            self.HP = self.maxHP
+            self.armor += 1
     
     def updateSpeed(self, keyPressed):
         speed = 3
